@@ -1,0 +1,5 @@
+{
+    "IdentityProvider": {
+        "hashed_password": "argon2:$argon2id$v=19$m=10240,t=10,p=8$peDMPuDdQoaivv29xle9cw$XKVZTAmGGTAzIk3wlkvJX0OuwMV9JiZUn9X19skq/aI"
+    }
+}

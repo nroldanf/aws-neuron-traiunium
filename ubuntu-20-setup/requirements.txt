@@ -1,0 +1,11 @@
+notebook==7.0.6
+jupyterlab==4.0.7
+ipykernel==6.26.0
+environment-kernels==1.2.0
+ipython==8.16.1
+torch==1.13.1
+torchvision==0.16.0
+tqdm==4.65.0
+boto3==1.28.71
+pandas==1.5.3
+sagemaker==2.195.0
