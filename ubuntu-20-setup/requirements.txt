@@ -9,3 +9,6 @@ tqdm==4.65.0
 boto3==1.28.71
 pandas==1.5.3
 sagemaker==2.195.0
+datasets==2.14.6
+torch-xla==2.1.0
+
