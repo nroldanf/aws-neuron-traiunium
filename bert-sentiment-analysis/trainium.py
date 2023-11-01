@@ -10,6 +10,7 @@ import torch_xla.core.xla_model as xm
 from torch.optim import AdamW
 from torch.utils.data import DataLoader
 from transformers import AutoTokenizer, AutoModelForSequenceClassification, get_scheduler
+from torch.utils.tensorboard import SummaryWriter
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -22,6 +23,8 @@ batch_size = 8
 num_epochs = 6
 
 print("Device: {}".format(device))
+
+writer = SummaryWriter('output')
 
 ## tokenize_and_encode
 # params:
@@ -77,21 +80,28 @@ if __name__ == '__main__':
     ## Start model training and defining the training loop
     model.train()
     for epoch in range(num_epochs):
-        for batch in train_dl:
+        for idx, batch in enumerate(train_dl):
             batch = {k: v.to(device) for k, v in batch.items()}
             outputs = model(**batch)
             loss = outputs.loss
             loss.backward()
             optimizer.step()
             lr_scheduler.step()
+            # log to tensorboard
+            writer.add_scalar("step loss", loss, idx)
             ## xm.mark_step is executing the current graph, updating the model params, and notifiy end of step to Neuron Core
             xm.mark_step()
             optimizer.zero_grad()
             progress_bar.update(1)
+            
+            
 
         print("Epoch {}, rank {}, Loss {:0.4f}".format(epoch, xm.get_ordinal(), loss.detach().to("cpu")))
 
     print("End training: {}".format(strftime("%Y-%m-%d %H:%M:%S", gmtime())))
+
+    # Ensure TensorBoard logs are all written
+    writer.flush()
 
     ## Using XLA for saving model after training for being sure only one copy of the model is saved
     os.makedirs("models/checkpoints/{}".format(current_timestamp), exist_ok=True)
