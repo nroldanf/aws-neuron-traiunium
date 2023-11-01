@@ -1,0 +1,9 @@
+name: neuron-conda
+channels:
+  - defaults
+dependencies:
+  - pip=22.3.1
+  - python=3.8.18
+  - pip:
+    - --extra-index-url pip.repos.neuron.amazonaws.com
+    - -r requirements.txt

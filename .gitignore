@@ -161,3 +161,8 @@ cython_debug/
 
 bert-sentiment-analysis/models/*
 !/**/.gitkeep
+
+**sig
+**gz
+**.key
+aws-efa-installer/
