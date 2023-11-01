@@ -20,8 +20,8 @@ model_name = "bert-base-cased"
 ## define xla as device for using AWS Trainium Neuron Cores
 device = "xla"
 
-batch_size = 16
-num_epochs = 5
+batch_size = 8
+num_epochs = 6
 
 print("Device: {}".format(device))
 
