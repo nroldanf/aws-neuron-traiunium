@@ -26,7 +26,7 @@ run-container-interactive-multi:
 		-v /home/ubuntu/workdir/aws-neuron-traiunium/:/opt/app/traiunium \
 		-v /home/ubuntu/workdir/aws-neuron-traiunium/.jupyter:/root/.jupyter \
 		-e AWS_NEURON_VISIBLE_DEVICES=ALL \
-		-e NEURON_RT_VISIBLE_CORES=0-1 \6006
+		-e NEURON_RT_VISIBLE_CORES=0-1 \
 		-e NEURON_RT_NUM_CORES=0 ${IMAGE_NAME} bash
 
 run-container-interactive-multi-no-oci:

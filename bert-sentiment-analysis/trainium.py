@@ -7,6 +7,7 @@ from time import gmtime, strftime
 from tqdm.auto import tqdm
 import torch
 import torch_xla.core.xla_model as xm
+import torch_xla.utils.serialization as xser
 from torch.optim import AdamW
 from torch.utils.data import DataLoader
 from transformers import AutoTokenizer, AutoModelForSequenceClassification, get_scheduler
@@ -19,8 +20,8 @@ model_name = "bert-base-cased"
 ## define xla as device for using AWS Trainium Neuron Cores
 device = "xla"
 
-batch_size = 8
-num_epochs = 6
+batch_size = 16
+num_epochs = 5
 
 print("Device: {}".format(device))
 
@@ -106,4 +107,6 @@ if __name__ == '__main__':
     ## Using XLA for saving model after training for being sure only one copy of the model is saved
     os.makedirs("models/checkpoints/{}".format(current_timestamp), exist_ok=True)
     checkpoint = {"state_dict": model.state_dict()}
+    # The saved data is transferred to PyTorch CPU device before being saved
     xm.save(checkpoint, "models/checkpoints/{}/checkpoint.pt".format(current_timestamp))
+    xser.save(model.state_dict(), "models/checkpoints/{}/checkpoint_serialized.pt".format(current_timestamp))
