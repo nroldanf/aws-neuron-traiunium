@@ -47,3 +47,12 @@ Neuron Collectives refers to a set of libraries used to support collective compu
 ### Huggingface
 
 https://huggingface.co/blog/pytorch-xla
+
+## Examples
+
+Example: https://github.com/aws-neuron/aws-neuron-samples/blob/master/torch-neuronx/training/hf_sentiment_analysis/README.md#activate-pre-built-pytorch-environment
+
+Available images: https://github.com/aws/deep-learning-containers/blob/master/available_images.md
+
+Fix to an error with AMI in the guide https://aws.amazon.com/releasenotes/aws-deep-learning-ami-neuron-pytorch-1-11-amazon-linux-2/
+ref: https://github.com/aws-neuron/aws-neuron-sdk/issues/632

@@ -20,7 +20,14 @@ run-container-interactive-single:
 	docker run -it -p 80:8000 --device=/dev/neuron0 ${IMAGE_NAME} bash
 
 run-container-interactive-multi:
-	docker run -it -p 80:8000 -e "AWS_NEURON_VISIBLE_DEVICES=ALL" -e NEURON_RT_NUM_CORES=8 ${IMAGE_NAME} bash
+	docker run -it \
+		-p 80:8000 \
+		-p 6006:6006 \
+		-v /home/ubuntu/workdir/aws-neuron-traiunium/:/opt/app/traiunium \
+		-v /home/ubuntu/workdir/aws-neuron-traiunium/.jupyter:/root/.jupyter \
+		-e AWS_NEURON_VISIBLE_DEVICES=ALL \
+		-e NEURON_RT_VISIBLE_CORES=0-1 \6006
+		-e NEURON_RT_NUM_CORES=0 ${IMAGE_NAME} bash
 
 run-container-interactive-multi-no-oci:
 	docker run -it -p 80:8000 --device=/dev/neuron0 --device=/dev/neuron1 ${IMAGE_NAME} bash
@@ -30,6 +37,6 @@ run-jupyter:
 		-v /home/ubuntu/workdir/aws-neuron-traiunium/:/opt/app/traiunium \
 		-v /home/ubuntu/workdir/aws-neuron-traiunium/.jupyter:/root/.jupyter \
 		-p 8888:8888 \
-		-e "AWS_NEURON_VISIBLE_DEVICES=ALL" -e NEURON_RT_NUM_CORES=8 \
+		-e "AWS_NEURON_VISIBLE_DEVICES=ALL" -e NEURON_RT_NUM_CORES=0 \
 		${IMAGE_NAME} \
 		jupyter notebook --allow-root --no-browser --port=8888

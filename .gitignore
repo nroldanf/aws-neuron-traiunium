@@ -166,3 +166,5 @@ bert-sentiment-analysis/models/*
 **gz
 **.key
 aws-efa-installer/
+bert-sentiment-analysis/neuronxcc-s3tommff/
+bert-sentiment-analysis/neuronxcc-0t9fqctd/

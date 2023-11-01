@@ -11,7 +11,7 @@ from torch.optim import AdamW
 from torch.utils.data import DataLoader
 from transformers import AutoTokenizer, AutoModelForSequenceClassification, get_scheduler
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 model_name = "bert-base-cased"
@@ -21,7 +21,7 @@ device = "xla"
 batch_size = 8
 num_epochs = 6
 
-logger.info("Device: {}".format(device))
+print("Device: {}".format(device))
 
 ## tokenize_and_encode
 # params:
@@ -72,7 +72,7 @@ if __name__ == '__main__':
         name="linear", optimizer=optimizer, num_warmup_steps=0, num_training_steps=num_training_steps
     )
 
-    logger.info("Start training: {}".format(strftime("%Y-%m-%d %H:%M:%S", gmtime())))
+    print("Start training: {}".format(strftime("%Y-%m-%d %H:%M:%S", gmtime())))
 
     ## Start model training and defining the training loop
     model.train()
@@ -89,11 +89,11 @@ if __name__ == '__main__':
             optimizer.zero_grad()
             progress_bar.update(1)
 
-        logger.info("Epoch {}, rank {}, Loss {:0.4f}".format(epoch, xm.get_ordinal(), loss.detach().to("cpu")))
+        print("Epoch {}, rank {}, Loss {:0.4f}".format(epoch, xm.get_ordinal(), loss.detach().to("cpu")))
 
-    logger.info("End training: {}".format(strftime("%Y-%m-%d %H:%M:%S", gmtime())))
+    print("End training: {}".format(strftime("%Y-%m-%d %H:%M:%S", gmtime())))
 
     ## Using XLA for saving model after training for being sure only one copy of the model is saved
-    os.makedirs("./../../models/checkpoints/{}".format(current_timestamp), exist_ok=True)
+    os.makedirs("models/checkpoints/{}".format(current_timestamp), exist_ok=True)
     checkpoint = {"state_dict": model.state_dict()}
-    xm.save(checkpoint, "./../../models/checkpoints/{}/checkpoint.pt".format(current_timestamp))
+    xm.save(checkpoint, "models/checkpoints/{}/checkpoint.pt".format(current_timestamp))
